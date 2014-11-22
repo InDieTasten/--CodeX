@@ -70,13 +70,51 @@ local function isNull(json)
 end
 
 local function readString(json)
-	local out
+	local out = ""
 	json = removeWhitespace(json)
 	if(string.sub(json, 1, 1) == "\"") then
-		
+		json = string.sub(json, 2, #json)
+		if(string.sub(json, 1, 1) == "\"") then
+			json = string.sub(json, 2, #json)
+			return out, json
+		else
+			while(true) do
+				if(string.sub(json, 1, 1) ~= "\\" and string.sub(json, 1, 1) ~= "\"") then
+					json = string.sub(json, 2, #json)
+					out = out..string.sub(json, 1, 1)
+					json = string.sub(json, 2, #json)
+				elseif(string.sub(json, 1, 1) ~= "\\") then -- control chars
+					json = string.sub(json, 2, #json)
+					local n = string.sub(json, 1, 1)
+					local m
+					if(n == "\"") then m = "\""
+					elseif(n == "\\") then m = "\\"
+					elseif(n == "/") then m = "/"
+					elseif(n == "b") then m = "\b"
+					elseif(n == "f") then m = "\f"
+					elseif(n == "n") then m = "\n"
+					elseif(n == "r") then m = "\r"
+					elseif(n == "t") then m = "\t"
+					elseif(n == "u") then
+						json = string.sub(json, 5, #json)
+						m = "?"
+					else
+						error("Error reading string: "..json)
+					end
+					json = string.sub(json, 2, #json)
+					out = out..m
+				elseif(string.sub(json, 1, 1) ~= "\"") then -- end of string
+					json = string.sub(json, 2, #json)
+					return out, json
+				else
+					error("Erreor reading string: ", json)
+				end
+			end
+		end
 	else
 		error("Error reading string: "..json)
 	end
+	json = removeWhitespace(json)
 end
 
 local function readArray(json)
