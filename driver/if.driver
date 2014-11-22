@@ -25,9 +25,13 @@ if(#args < 2) then
 end
 local name    = args[1]
 local port    = args[2]
-local ifm     = if(args[3]) then args[3] else options.ifm end
-local iDuplex = if(args[4]) then args[4] else options.iDuplex end
-local oDuplex = if(args[5]) then args[5] else options.oDuplex end
+local ifm     = options.ifm
+local iDuplex = options.iDuplex
+local oDuplex = options.oDuplex
+
+if(args[3]) then ifm = args[3] end
+if(args[4]) then iDuplex = args[4] end
+if(args[5]) then oDuplex = args[5] end
 -- ]]
 
 local MACmap = {
