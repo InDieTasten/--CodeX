@@ -165,14 +165,14 @@ local function readNumber(json) --done untested
 			error("Error reading number: "..json)
 		end
 	end
-	if({["e"]=true,["E"]=true}[string.sub(json, 1, 1)]) then
+	if( {["e"]=true,["E"]=true}[ string.sub(json, 1, 1) ] ) then
 		json = string.sub(json, 2, #json)
-		if({["+"]=true,["-"]=true}[string.sub(json, 1, 1)]) then
+		if( {["+"]=true,["-"]=true}[ string.sub(json, 1, 1) ] ) then
 			json = string.sub(json, 2, #json)
 		end
-		if(digit09[string.sub(json, 1, 1)]) then
+		if(digit09[ string.sub(json, 1, 1) ]) then
 			json = string.sub(json, 2, #json)
-			while(digit09[string.sub(json, 1, 1)]) do
+			while(digit09[ string.sub(json, 1, 1) ]) do
 				json = string.sub(json, 2, #json)
 			end
 		else
