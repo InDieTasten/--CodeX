@@ -120,7 +120,7 @@ local function readString(json) --done tested
 						json = removeFirst(json)
 						m = "?"
 					else
-						error("Error reading string: "..json)
+						error("Error reading string: "..tostring(json))
 					end
 					json = removeFirst(json)
 					out = out..m
@@ -128,12 +128,12 @@ local function readString(json) --done tested
 					json = removeFirst(json)
 					return out, json
 				else
-					error("Erreor reading string: ", json)
+					error("Erreor reading string: "..tostring(json))
 				end
 			end
 		end
 	else
-		error("Error reading string: "..json)
+		error("Error reading string: "..tostring(json))
 	end
 	json = removeWhitespace(json)
 end
@@ -183,7 +183,7 @@ local function readNumber(json) --done tested
 	elseif(first(json) == "0") then
 		json = removeFirst(json)
 	else
-		error("Error reading number: "..json)
+		error("Error reading number: "..tostring(json))
 	end
 	if(first(json) == ".") then
 		json = removeFirst(json)
@@ -193,7 +193,7 @@ local function readNumber(json) --done tested
 				json = removeFirst(json)
 			end
 		else
-			error("Error reading number: "..json)
+			error("Error reading number: "..tostring(json))
 		end
 	end
 	if( e[ first(json) ] ) then
@@ -207,7 +207,7 @@ local function readNumber(json) --done tested
 				json = removeFirst(json)
 			end
 		else
-			error("Error reading number: "..json)
+			error("Error reading number: "..tostring(json))
 		end
 	end
 	return tonumber(string.sub(backup, 1, #backup-#json)), json
@@ -242,23 +242,23 @@ local function readObject(json) --done tested
 								json = removeWhitespace(json)
 								return out, json
 							else
-								error("Error reading object: "..json)
+								error("Error reading object: "..tostring(json))
 							end
 						else
-							error("Error reading object: "..json)
+							error("Error reading object: "..tostring(json))
 						end
 					else
-						error("Error reading object: "..json)
+						error("Error reading object: "..tostring(json))
 					end
 				else
-					error("Error reading object: "..json)
+					error("Error reading object: "..tostring(json))
 				end
 			end
 		else
-			error("Error reading object: "..json)
+			error("Error reading object: "..tostring(json))
 		end
 	else
-		error("Error reading object: "..json)
+		error("Error reading object: "..tostring(json))
 	end
 end
 local function readArray(json) --done tested
@@ -282,16 +282,16 @@ local function readArray(json) --done tested
 					json = removeFirst(json)
 					return out, json
 				else
-					error("Error reading array: "..json)
+					error("Error reading array: "..tostring(json))
 				end
 			else
-				error("Error reading array: "..json)
+				error("Error reading array: "..tostring(json))
 			end
 		end
 		json = removeFirst(json)
 		return out, json
 	else
-		error("Error reading array: "..json)
+		error("Error reading array: "..tostring(json))
 	end
 end
 local function readValue(json) --done tested
@@ -310,7 +310,7 @@ local function readValue(json) --done tested
 	elseif(isNull(json)) then
 		return readNull(json)
 	else
-		error("Error reading value: "..json)
+		error("Error reading value: "..tostring(json))
 	end
 end
 local function readTrue(json) --done tested
@@ -320,7 +320,7 @@ local function readTrue(json) --done tested
 		json = removeWhitespace(json)
 		return true, json
 	else
-		error("Error reading true: ", json)
+		error("Error reading true: "..tostring(json))
 	end
 end
 local function readFalse(json) --done tested
@@ -330,7 +330,7 @@ local function readFalse(json) --done tested
 		json = removeWhitespace(json)
 		return true, json
 	else
-		error("Error reading false: ", json)
+		error("Error reading false: "..tostring(json))
 	end
 end
 local function readNull(json) --done tested
@@ -340,7 +340,7 @@ local function readNull(json) --done tested
 		json = removeWhitespace(json)
 		return nil, json
 	else
-		error("Error reading null: ", json)
+		error("Error reading null: "..tostring(json))
 	end
 end
 
