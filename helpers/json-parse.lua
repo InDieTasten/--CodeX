@@ -24,6 +24,23 @@ if(args[1]) then namespace = args[1] end
 
 _G[namespace] = {}
 
+local function first(json)
+	if(#json > 0) then
+		return string.sub(json, 1, 1)
+	else
+		error(2, "End of string")
+	end
+end
+local function removeFirst(json)
+	if(#json > 1) then
+		return string.sub(json, 2, #json)
+	elseif(#json == 1) then
+		return ""
+	else
+		error(2, "End of string")
+	end
+end
+
 local whitespace = {" ","	","\n"}
 function isWhitespace(x) --done untested
 	for k,v in pairs(whitespace) do
@@ -32,8 +49,8 @@ function isWhitespace(x) --done untested
 	return false
 end
 function removeWhitespace(json) --done untested
-	while(isWhitespace(string.sub(json, 1, 1))) do
-		json = string.sub(json, 2, #json)
+	while(isWhitespace(first(json))) do
+		json = removeFirst(json)
 	end
 	return json
 end
@@ -72,22 +89,22 @@ end
 function readString(json) --done untested
 	local out = ""
 	json = removeWhitespace(json)
-	if(string.sub(json, 1, 1) == "\"") then
-		json = string.sub(json, 2, #json)
-		if(string.sub(json, 1, 1) == "\"") then
-			json = string.sub(json, 2, #json)
+	if(first(json) == "\"") then
+		json = removeFirst(json)
+		if(first(json) == "\"") then
+			json = removeFirst(json)
 			return out, json
 		else
 			while(true) do
 				print(1)
-				if(string.sub(json, 1, 1) ~= "\\" and string.sub(json, 1, 1) ~= "\"") then --normal chars
+				if(first(json) ~= "\\" and first(json) ~= "\"") then --normal chars
 					print(2)
-					out = out..string.sub(json, 1, 1)
-					json = string.sub(json, 2, #json)
-				elseif(string.sub(json, 1, 1) == "\\") then -- control chars
+					out = out..first(json)
+					json = removeFirst(json)
+				elseif(first(json) == "\\") then -- control chars
 					print(3)
-					json = string.sub(json, 2, #json)
-					local n = string.sub(json, 1, 1)
+					json = removeFirst(json)
+					local n = first(json)
 					local m
 					if(n == "\"") then m = "\""
 					elseif(n == "\\") then m = "\\"
@@ -98,16 +115,19 @@ function readString(json) --done untested
 					elseif(n == "r") then m = "\r"
 					elseif(n == "t") then m = "\t"
 					elseif(n == "u") then
-						json = string.sub(json, 5, #json)
+						json = removeFirst(json)
+						json = removeFirst(json)
+						json = removeFirst(json)
+						json = removeFirst(json)
 						m = "?"
 					else
 						error("Error reading string: "..json)
 					end
-					json = string.sub(json, 2, #json)
+					json = removeFirst(json)
 					out = out..m
-				elseif(string.sub(json, 1, 1) == "\"") then -- end of string
+				elseif(first(json) == "\"") then -- end of string
 					print(4)
-					json = string.sub(json, 2, #json)
+					json = removeFirst(json)
 					return out, json
 				else
 					print(5)
@@ -155,39 +175,39 @@ function readNumber(json) --done tested
 	--validate
 	json = removeWhitespace(json)
 	local backup = json
-	if(string.sub(json, 1, 1) == "-") then
-		json = string.sub(json, 2, #json)
+	if(first(json) == "-") then
+		json = removeFirst(json)
 	end
-	if(digit19[string.sub(json, 1, 1)]) then
-		json = string.sub(json, 2, #json)
-		while(digit09[string.sub(json, 1, 1)]) do
-			json = string.sub(json, 2, #json)
+	if(digit19[first(json)]) then
+		json = removeFirst(json)
+		while(digit09[first(json)]) do
+			json = removeFirst(json)
 		end
-	elseif(string.sub(json, 1, 1) == "0") then
-		json = string.sub(json, 2, #json)
+	elseif(first(json) == "0") then
+		json = removeFirst(json)
 	else
 		error("Error reading number: "..json)
 	end
-	if(string.sub(json, 1, 1) == ".") then
-		json = string.sub(json, 2, #json)
-		if(digit09[string.sub(json, 1, 1)]) then
-			json = string.sub(json, 2, #json)
-			while(digit09[string.sub(json, 1, 1)]) do
-				json = string.sub(json, 2, #json)
+	if(first(json) == ".") then
+		json = removeFirst(json)
+		if(digit09[first(json)]) then
+			json = removeFirst(json)
+			while(digit09[first(json)]) do
+				json = removeFirst(json)
 			end
 		else
 			error("Error reading number: "..json)
 		end
 	end
-	if( e[ string.sub(json, 1, 1) ] ) then
-		json = string.sub(json, 2, #json)
-		if( sign[ string.sub(json, 1, 1) ] ) then
-			json = string.sub(json, 2, #json)
+	if( e[ first(json) ] ) then
+		json = removeFirst(json)
+		if( sign[ first(json) ] ) then
+			json = removeFirst(json)
 		end
-		if(digit09[ string.sub(json, 1, 1) ]) then
-			json = string.sub(json, 2, #json)
-			while(digit09[ string.sub(json, 1, 1) ]) do
-				json = string.sub(json, 2, #json)
+		if(digit09[ first(json) ]) then
+			json = removeFirst(json)
+			while(digit09[ first(json) ]) do
+				json = removeFirst(json)
 			end
 		else
 			error("Error reading number: "..json)
@@ -198,11 +218,11 @@ end
 function readObject(json) --done untested
 	local out = {}
 	json = removeWhitespace(json)
-	if(string.sub(json, 1, 1) == "{") then
-		json = string.sub(json, 2, #json)
+	if(first(json) == "{") then
+		json = removeFirst(json)
 		json = removeWhitespace(json)
-		if(string.sub(json, 1, 1) == "}") then
-			json = string.sub(json, 2, #json)
+		if(first(json) == "}") then
+			json = removeFirst(json)
 			json = removeWhitespace(json)
 			return out, json
 		elseif(isString(json)) then
@@ -210,18 +230,18 @@ function readObject(json) --done untested
 				if(isString(json)) then
 					k, json = readString(json)
 					json = removeWhitespace(json)
-					if(string.sub(json, 1, 1) == ":") then
-						json = string.sub(json, 2, #json)
+					if(first(json) == ":") then
+						json = removeFirst(json)
 						json = removeWhitespace(json)
 						if(isValue(json)) then
 							v, json = readValue(json)
 							out[k] = v
 							json = removeWhitespace(json)
-							if(string.sub(json, 1, 1) == ",") then
-								json = string.sub(json, 2, #json)
+							if(first(json) == ",") then
+								json = removeFirst(json)
 								json = removeWhitespace(json)
-							elseif(string.sub(json, 1, 1) == "}") then
-								json = string.sub(json, 2, #json)
+							elseif(first(json) == "}") then
+								json = removeFirst(json)
 								json = removeWhitespace(json)
 								return out, json
 							else
@@ -248,10 +268,10 @@ function readArray(json) --done untested
 	local out = {}
 	local index = 1
 	json = removeWhitespace(json)
-	if(string.sub(json, 1, 1) == "[") then
-		json = string.sub(json, 2, #json)
-		if(string.sub(json, 1, 1) == "]") then
-			json = string.sub(json, 2, #json)
+	if(first(json) == "[") then
+		json = removeFirst(json)
+		if(first(json) == "]") then
+			json = removeFirst(json)
 			return out, json
 		end
 		while true do
@@ -259,10 +279,10 @@ function readArray(json) --done untested
 				out[index], json = readValue(json)
 				index = index + 1
 				json = removeWhitespace(json)
-				if(string.sub(json, 1, 1) == ",") then
-					json = string.sub(json, 2, #json)
-				elseif(string.sub(json, 1, 1) == "]") then
-					json = string.sub(json, 2, #json)
+				if(first(json) == ",") then
+					json = removeFirst(json)
+				elseif(first(json) == "]") then
+					json = removeFirst(json)
 					return out, json
 				else
 					error("Error reading array: "..json)
@@ -271,7 +291,7 @@ function readArray(json) --done untested
 				error("Error reading array: "..json)
 			end
 		end
-		json = string.sub(json, 2, #json)
+		json = removeFirst(json)
 		return out, json
 	else
 		error("Error reading array: "..json)
