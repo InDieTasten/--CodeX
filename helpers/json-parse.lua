@@ -41,7 +41,7 @@ function isString(json) --done untested
 	e, m = pcall(readString, json)
 	return e
 end
-function isNumber(json) --done untested
+function isNumber(json) --done tested
 	e, m = pcall(readNumber, json)
 	return e
 end
@@ -83,7 +83,7 @@ function readString(json) --done untested
 					json = string.sub(json, 2, #json)
 					out = out..string.sub(json, 1, 1)
 					json = string.sub(json, 2, #json)
-				elseif(string.sub(json, 1, 1) ~= "\\") then -- control chars
+				elseif(string.sub(json, 1, 1) == "\\") then -- control chars
 					json = string.sub(json, 2, #json)
 					local n = string.sub(json, 1, 1)
 					local m
@@ -103,7 +103,7 @@ function readString(json) --done untested
 					end
 					json = string.sub(json, 2, #json)
 					out = out..m
-				elseif(string.sub(json, 1, 1) ~= "\"") then -- end of string
+				elseif(string.sub(json, 1, 1) == "\"") then -- end of string
 					json = string.sub(json, 2, #json)
 					return out, json
 				else
@@ -147,7 +147,7 @@ local sign = {
 	["+"] = true,
 	["-"] = true
 }
-function readNumber(json) --done untested
+function readNumber(json) --done tested
 	--validate
 	json = removeWhitespace(json)
 	local backup = json
