@@ -48,17 +48,17 @@ local function apicall(url)
 end
 
 if(args[1] == "ls") then
-	repo = http.get("https://api.github.com/repos/InDieTasten/CodeX")
-	if(repo) then
-		repo = json.parse(repo)
-		if(repo) then
-			branch = http.get("https://api.github.com/repos/InDieTasten/CodeX/branches/"..repo.default_branch)
-			if(branch) then
-				branch = json.parse(branch)
-				if(branch) then
-
-				end
+	repo = apicall("https://api.github.com/repos/InDieTasten/CodeX")
+	branch = apicall("https://api.github.com/repos/InDieTasten/CodeX/branches/"..repo.default_branch)
+	tree = apicall(branch.commit.tree.url)
+	for k, elem in pairs(tree.tree) defintion do
+		if(elem.path == "install-definitions") then
+			tree = apicall(elem.url)
+			for k, elem in pairs(tree.tree) do
+				name = elem.path
+				print(string.sub(name, 1, #name-5))
 			end
+			break
 		end
 	end
 end
