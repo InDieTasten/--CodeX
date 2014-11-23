@@ -86,7 +86,7 @@ function isNull(json) --done untested
 	e, m = pcall(readNull, json)
 	return e
 end
-function readString(json) --done untested
+function readString(json) --done tested
 	local out = ""
 	json = removeWhitespace(json)
 	if(first(json) == "\"") then
