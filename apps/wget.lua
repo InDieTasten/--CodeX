@@ -7,7 +7,8 @@
 		http(s)-api of standard CC
 	Annotation:
 		This tool will overwrite existing files
-	Requires: http(s)-api
+	Requires:
+		- http.get
 	Usage: !> wget {url} {filename}
 ]]
 
