@@ -1,0 +1,7 @@
+{
+	"name": "dev-system",
+	"items": [
+	{"source": "https://raw.githubusercontent.com/InDieTasten/CodeX/master/apps/wget.lua", "destination": "/bin/wget"},
+	{"source": "URL", "destination": "PATH"}
+	]
+}
