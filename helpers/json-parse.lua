@@ -28,7 +28,7 @@ local function first(json)
 	if(#json > 0) then
 		return string.sub(json, 1, 1)
 	else
-		error(2, "End of string")
+		error("End of string", 2)
 	end
 end
 local function removeFirst(json)
@@ -37,7 +37,7 @@ local function removeFirst(json)
 	elseif(#json == 1) then
 		return ""
 	else
-		error(2, "End of string")
+		error("End of string", 2)
 	end
 end
 
