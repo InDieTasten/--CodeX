@@ -25,35 +25,35 @@ if(args[1]) then namespace = args[1] end
 _G[namespace] = {}
 
 local whitespace = {" ","	","\n"}
-local function isWhitespace(x) --done untested
+function isWhitespace(x) --done untested
 	for k,v in pairs(whitespace) do
 		if(v == x) then return true end
 	end
 	return false
 end
-local function removeWhitespace(json) --done untested
+function removeWhitespace(json) --done untested
 	while(isWhitespace(string.sub(json, 1, 1))) do
 		json = string.sub(json, 2, #json)
 	end
 	return json
 end
-local function isString(json) --done untested
+function isString(json) --done untested
 	e, m = pcall(readString, json)
 	return e
 end
-local function isNumber(json) --done untested
+function isNumber(json) --done untested
 	e, m = pcall(readNumber, json)
-	return e
+	return 
 end
-local function isObject(json) --done untested
+function isObject(json) --done untested
 	e, m = pcall(readObject, json)
 	return e
 end
-local function isArray(json) --done untested
+function isArray(json) --done untested
 	e, m = pcall(readArray, json)
 	return e
 end
-local function isValue(json) --done untested
+function isValue(json) --done untested
 	e, m = pcall(readValue, json)
 	return e
 end
@@ -61,15 +61,15 @@ local function isTrue(json) --done untested
 	e, m = pcall(readTrue, json)
 	return e
 end
-local function isFalse(json) --done untested
+function isFalse(json) --done untested
 	e, m = pcall(readFalse, json)
 	return e
 end
-local function isNull(json) --done untested
+function isNull(json) --done untested
 	e, m = pcall(readNull, json)
 	return e
 end
-local function readString(json) --done untested
+function readString(json) --done untested
 	local out = ""
 	json = removeWhitespace(json)
 	if(string.sub(json, 1, 1) == "\"") then
@@ -147,7 +147,7 @@ local sign = {
 	["+"] = true,
 	["-"] = true
 }
-local function readNumber(json) --done untested
+function readNumber(json) --done untested
 	--validate
 	json = removeWhitespace(json)
 	local backup = json
@@ -191,7 +191,7 @@ local function readNumber(json) --done untested
 	end
 	return tonumber(string.sub(backup, 1, #backup-#json)), json
 end
-local function readObject(json) --done untested
+function readObject(json) --done untested
 	local out = {}
 	json = removeWhitespace(json)
 	if(string.sub(json, 1, 1) == "{") then
@@ -240,7 +240,7 @@ local function readObject(json) --done untested
 		error("Error reading object: "..json)
 	end
 end
-local function readArray(json) --done untested
+function readArray(json) --done untested
 	local out = {}
 	local index = 1
 	json = removeWhitespace(json)
@@ -273,7 +273,7 @@ local function readArray(json) --done untested
 		error("Error reading array: "..json)
 	end
 end
-local function readValue(json) --done untested
+function readValue(json) --done untested
 	if(isString(json)) then
 		return readString(json)
 	elseif(isNumber(json)) then
@@ -292,7 +292,7 @@ local function readValue(json) --done untested
 		error("Error reading value: "..json)
 	end
 end
-local function readTrue(json) --done untested
+function readTrue(json) --done untested
 	json = removeWhitespace(json)
 	if(string.sub(json, 1, 4) == "true") then
 		json = string.sub(json, 5, #json)
@@ -302,7 +302,7 @@ local function readTrue(json) --done untested
 		error("Error reading true: ", json)
 	end
 end
-local function readFalse(json) --done untested
+function readFalse(json) --done untested
 	json = removeWhitespace(json)
 	if(string.sub(json, 1, 5) == "false") then
 		json = string.sub(json, 6, #json)
@@ -312,7 +312,7 @@ local function readFalse(json) --done untested
 		error("Error reading false: ", json)
 	end
 end
-local function readNull(json) --done untested
+function readNull(json) --done untested
 	json = removeWhitespace(json)
 	if(string.sub(json, 1, 4) == "null") then
 		json = string.sub(json, 5, #json)
@@ -325,5 +325,6 @@ end
 
 
 _G[namespace].parse = function(json)
-	return readValue(json)
+	value, json = readValue(json)
+	return value
 end
