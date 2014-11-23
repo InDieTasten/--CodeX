@@ -75,7 +75,7 @@ function isValue(json) --done untested
 	e, m = pcall(readValue, json)
 	return e
 end
-local function isTrue(json) --done untested
+function isTrue(json) --done untested
 	e, m = pcall(readTrue, json)
 	return e
 end
@@ -97,13 +97,10 @@ function readString(json) --done tested
 			return out, json
 		else
 			while(true) do
-				print(1)
 				if(first(json) ~= "\\" and first(json) ~= "\"") then --normal chars
-					print(2)
 					out = out..first(json)
 					json = removeFirst(json)
 				elseif(first(json) == "\\") then -- control chars
-					print(3)
 					json = removeFirst(json)
 					local n = first(json)
 					local m
@@ -127,11 +124,9 @@ function readString(json) --done tested
 					json = removeFirst(json)
 					out = out..m
 				elseif(first(json) == "\"") then -- end of string
-					print(4)
 					json = removeFirst(json)
 					return out, json
 				else
-					print(5)
 					error("Erreor reading string: ", json)
 				end
 			end
