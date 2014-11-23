@@ -255,7 +255,7 @@ local function readArray(json) --done untested
 				json = removeWhitespace(json)
 				if(string.sub(json, 1, 1) == ",") then
 					json = string.sub(json, 2, #json)
-				elseif(string.sub(json, 1, 1) == "]")
+				elseif(string.sub(json, 1, 1) == "]") then
 					json = string.sub(json, 2, #json)
 					return out, json
 				else
