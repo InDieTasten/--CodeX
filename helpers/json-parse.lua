@@ -137,6 +137,14 @@ local digit09 = {
 	["8"] = true,
 	["9"] = true
 }
+local e = {
+	["e"] = true,
+	["E"] = true
+}
+local sign = {
+	["+"] = true,
+	["-"] = true
+}
 local function readNumber(json) --done untested
 	--validate
 	json = removeWhitespace(json)
@@ -165,9 +173,9 @@ local function readNumber(json) --done untested
 			error("Error reading number: "..json)
 		end
 	end
-	if( {["e"]=true,["E"]=true}[ string.sub(json, 1, 1) ] ) then
+	if( e[ string.sub(json, 1, 1) ] ) then
 		json = string.sub(json, 2, #json)
-		if( {["+"]=true,["-"]=true}[ string.sub(json, 1, 1) ] ) then
+		if( sign[ string.sub(json, 1, 1) ] ) then
 			json = string.sub(json, 2, #json)
 		end
 		if(digit09[ string.sub(json, 1, 1) ]) then
