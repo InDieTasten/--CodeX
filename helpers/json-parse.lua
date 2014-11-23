@@ -49,6 +49,7 @@ function isWhitespace(x) --done untested
 	return false
 end
 function removeWhitespace(json) --done untested
+	if(#json == 0) then return json end
 	while(isWhitespace(first(json))) do
 		json = removeFirst(json)
 	end
