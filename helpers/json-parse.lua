@@ -22,6 +22,8 @@ local namespace = options.namespace
 if(args[1]) then namespace = args[1] end
 -- ]]
 
+_G[namespace] = {}
+
 local whitespace = {" ","	","\n"}
 local function isWhitespace(x) --done untested
 	for k,v in pairs(whitespace) do
