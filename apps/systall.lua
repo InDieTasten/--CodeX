@@ -39,8 +39,8 @@ local function apicall(url)
 	if(http) then
 		if(json) then
 			js = http.get(url)
-			if(json) then
-				obj = json.parse(js)
+			if(js) then
+				obj = json.parse(js.readAll())
 				if(obj) then
 					return obj
 				else
