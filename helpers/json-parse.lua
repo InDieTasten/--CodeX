@@ -43,7 +43,7 @@ function isString(json) --done untested
 end
 function isNumber(json) --done untested
 	e, m = pcall(readNumber, json)
-	return 
+	return e
 end
 function isObject(json) --done untested
 	e, m = pcall(readObject, json)
