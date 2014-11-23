@@ -51,7 +51,7 @@ if(args[1] == "ls") then
 	repo = apicall("https://api.github.com/repos/InDieTasten/CodeX")
 	branch = apicall("https://api.github.com/repos/InDieTasten/CodeX/branches/"..repo.default_branch)
 	tree = apicall(branch.commit.tree.url)
-	for k, elem in pairs(tree.tree) defintion do
+	for k, elem in pairs(tree.tree) do
 		if(elem.path == "install-definitions") then
 			tree = apicall(elem.url)
 			for k, elem in pairs(tree.tree) do
