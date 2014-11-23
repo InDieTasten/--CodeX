@@ -8,7 +8,9 @@
 	Annotation:
 		This tool will overwrite and/or delete
 		existing files
-	Requires: http(s)-api
+	Requires:
+		- http.get
+		- json.parse
 	Usage: !> systall --help
 ]]
 local args = {...}
@@ -34,16 +36,24 @@ end
 
 
 local function apicall(url)
-	json = http.get(url)
-	if(json) then
-		obj = json.parse(json)
-		if(obj) then
-			return obj
+	if(http) then
+		if(json) then
+			js = http.get(url)
+			if(json) then
+				obj = json.parse(js)
+				if(obj) then
+					return obj
+				else
+					error("Could not parse API response", 3)
+				end
+			else
+				error("Could not call API", 3)
+			end
 		else
-			error("Could not parse API response", 2)
+			error("json parser not found", 3)
 		end
 	else
-		error("Could not call API", 2)
+		error("http api not found", 3)
 	end
 end
 
