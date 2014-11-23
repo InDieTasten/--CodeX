@@ -82,7 +82,6 @@ function readString(json) --done untested
 				print(1)
 				if(string.sub(json, 1, 1) ~= "\\" and string.sub(json, 1, 1) ~= "\"") then --normal chars
 					print(2)
-					json = string.sub(json, 2, #json)
 					out = out..string.sub(json, 1, 1)
 					json = string.sub(json, 2, #json)
 				elseif(string.sub(json, 1, 1) == "\\") then -- control chars
