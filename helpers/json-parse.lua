@@ -346,6 +346,10 @@ end
 
 
 _G[namespace].parse = function(json)
-	value, json = readValue(json)
-	return value
+	if(isValue(json)) then
+		value, json = readValue(json)
+		return value
+	else
+		return nil
+	end
 end
