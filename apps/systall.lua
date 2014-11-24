@@ -36,11 +36,14 @@ end
 
 
 local function apicall(url)
+	print(url)
 	if(http) then
 		if(json) then
 			js = http.get(url)
+			print(js)
 			if(js) then
 				obj = json.parse(js.readAll())
+				print(obj)
 				if(obj) then
 					return obj
 				else
@@ -66,7 +69,9 @@ if(args[1] == "ls") then
 			tree = apicall(elem.url)
 			for k, elem in pairs(tree.tree) do
 				name = elem.path
-				print(string.sub(name, 1, #name-5))
+				if(elem.type == "blob") then
+					print(string.sub(name, 1, #name-5))
+				end
 			end
 			break
 		end
