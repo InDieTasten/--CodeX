@@ -1,7 +1,11 @@
 {
-	"name": "dev-system",
-	"items": [
-	{"source": "https://raw.githubusercontent.com/InDieTasten/CodeX/master/apps/wget.lua", "destination": "/bin/wget"},
-	{"source": "URL", "destination": "PATH"}
+	"name"    : "dev-system" ,
+	"userdir" : "/user"      ,
+	"packeges": [
+	{"source": "https://raw.githubusercontent.com/InDieTasten/CodeX/master/drivers/ifm.lua"        , "destination": "/drivers/ifm"    },
+	{"source": "https://raw.githubusercontent.com/InDieTasten/CodeX/master/drivers/if.lua"         , "destination": "/drivers/if"     },
+	{"source": "https://raw.githubusercontent.com/InDieTasten/CodeX/master/helpers/json-parse.lua" , "destination": "/bin/json-parse" },
+	{"source": "https://raw.githubusercontent.com/InDieTasten/CodeX/master/apps/wget.lua"          , "destination": "/bin/wget"       },
+	{"source": "https://raw.githubusercontent.com/InDieTasten/CodeX/master/apps/systall.lua"       , "destination": "/bin/systall"    }
 	]
 }
