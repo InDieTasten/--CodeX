@@ -14,6 +14,9 @@
 local options = {
 	["namespace"] = "json",
 }
+function verbose(text)
+	print(text)
+end
 -- ]]
 
 -- [[ INPUTS
@@ -233,6 +236,9 @@ local function readObject(json) --done tested
 						if(isValue(json)) then
 							v, json = readValue(json)
 							out[k] = v
+
+							verbose(tostring(k)..": "..tostring(v))
+
 							json = removeWhitespace(json)
 							if(first(json) == ",") then
 								json = removeFirst(json)
