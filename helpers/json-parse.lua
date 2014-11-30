@@ -35,7 +35,10 @@ local function first(json)
 		error("End of string", 2)
 	end
 end
+local pos = 1
 local function removeFirst(json)
+	print(pos)
+	pos = pos+1
 	if(#json > 1) then
 		return string.sub(json, 2, #json)
 	elseif(#json == 1) then
