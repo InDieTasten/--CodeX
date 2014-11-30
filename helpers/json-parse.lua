@@ -39,6 +39,7 @@ local pos = 1
 local function removeFirst(json)
 	print(pos)
 	pos = pos+1
+	sleep(0.05)
 	if(#json > 1) then
 		return string.sub(json, 2, #json)
 	elseif(#json == 1) then
