@@ -356,6 +356,8 @@ end
 
 
 _G[namespace].parse = function(json)
-	tmp, _ = readValue(json)
-	return tmp
+	if(isValue(json)) then
+		obj, remain = readValue(json)
+		return obj
+	end
 end
