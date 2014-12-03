@@ -359,5 +359,7 @@ _G[namespace].parse = function(json)
 	if(isValue(json)) then
 		obj, remain = readValue(json)
 		return obj
+	else
+		error("debug")
 	end
 end
