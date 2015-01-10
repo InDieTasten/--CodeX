@@ -7,14 +7,13 @@
 		- When loading, this driver will create or overwrite
 		a namespace given in the first argument
 	Requires: ifm.driver
-	Loading: !> if.driver {if0} {back}  [ifm-name] [iDuplex] [oDuplex]
+	Loading: !> if.driver {if0} {back}  [ifm-name] [duplexCh]
 ]]
 
 -- [[ OPTIONS
 local options = {
 	["ifm"] = "ifm", -- namespace of loaded ifm.driver
-	["iDuplex"] = 0, -- namespace of loaded ifm.driver
-	["oDuplex"] = 1, -- namespace of loaded ifm.driver
+	["duplexCh"] = 0, -- namespace of loaded ifm.driver
 }
 -- ]]
 
@@ -26,12 +25,10 @@ end
 local name    = args[1]
 local port    = args[2]
 local ifm     = options.ifm
-local iDuplex = options.iDuplex
-local oDuplex = options.oDuplex
+local duplexCh = options.duplexCh
 
 if(args[3]) then ifm = args[3] end
-if(args[4]) then iDuplex = args[4] end
-if(args[5]) then oDuplex = args[5] end
+if(args[4]) then duplexCh = args[4] end
 -- ]]
 
 local MACmap = {
@@ -73,7 +70,7 @@ end
 
 local listener = function(e)
 	if(e[1] == "modem_message") then								-- check whether network activity
-		if(e[2] == args[1]) then									-- check for correct InterFace
+		if(e[2] == port) then									-- check for correct InterFace
 			if(e[3] == 0 and e[4] == 1) then						-- check for correct link usage
 				frame = textutils.unserialize(e[5])
 				if(type(frame) == "table") then						-- check for frame
@@ -100,6 +97,14 @@ local listener = function(e)
 end
 
 _G[name].lift = function()
+	local m = peripheral.wrap(port))
+	if(m) then
+		if(m.open) then
+			m.open(duplexCh)
+		else
+			
+		end
+	end
 	if(type(_G[ifm]) == "table") then
 		_G[ifm].liftListener(name, listener)
 	else
